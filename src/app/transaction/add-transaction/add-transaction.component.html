@@ -1,0 +1,41 @@
+<div class="add-transaction-container">
+  <h3 class="mb-4">Add Transaction</h3>
+  <form (ngSubmit)="submitAddTransaction()" [formGroup]="formGroupAddTransaction" class="">
+    <div class="mb-2">
+      <label class="form-label">Type</label>
+      <select  class="form-select" formControlName="type" name="type">
+        <option *ngFor="let type of listTransactionType" [value]="type">{{type}}</option>
+      </select>
+    </div>
+
+    <div class="mb-2">
+      <label for="note" class="form-label">Title</label>
+      <input class="form-control" id="note" formControlName="note">
+    </div>
+
+    <div class="mb-2">
+      <label class="form-label">Category</label>
+      <select class="form-select" formControlName="category">
+        <option *ngFor="let type of listCategories" [value]="type.id">
+          {{type.name}}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-2">
+      <label for="amount" class="form-label">Amount</label>
+      <input type="text" class="form-control" id="amount" formControlName="amount">
+    </div>
+
+    <div class="mb-4">
+      <label for="date" class="form-label">Date</label>
+      <input class="form-control" id="date" formControlName="date">
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button (click)="cancelTransaction()" class="btn btn-outline-warn">Cancel</button>
+      <button type="submit" class="btn btn-success">Submit</button>
+    </div>
+
+  </form>
+</div>
