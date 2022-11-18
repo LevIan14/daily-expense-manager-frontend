@@ -14,7 +14,7 @@ export class ExpenseManagerService {
   ) { }
 
   getAllTransactionsByYear(year: string): Observable<ExpenseManager[]> {
-    return this.httpClient.get<ExpenseManager[]>(`${environment.urlApi}`);
+    return this.httpClient.get<ExpenseManager[]>(`${environment.urlApi}/transaction/list`);
   }
 
   getAllCategories(): Observable<Category[]> {
@@ -32,4 +32,7 @@ export class ExpenseManagerService {
   addCategory(bodyRequest: Category): Observable<Category> {
     return this.httpClient.post<Category>(`${environment.urlApi}`, bodyRequest);
   }
+
+
+
 }

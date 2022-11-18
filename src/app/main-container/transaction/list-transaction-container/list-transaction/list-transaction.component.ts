@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ExpenseManagerService} from "../../../expense-manager.service";
+import {ExpenseManagerService} from "../../../../expense-manager.service";
 import * as dayjs from "dayjs";
 
 @Component({
@@ -31,7 +31,7 @@ export class ListTransactionComponent implements OnInit {
 
       },
       error: () => {
-
+        console.log('masuk');
       }
     });
   }

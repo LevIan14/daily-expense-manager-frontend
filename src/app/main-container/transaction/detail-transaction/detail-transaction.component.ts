@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {ExpenseManagerService} from "../../expense-manager.service";
-import {ExpenseManager} from "../../expense-manager";
+import {ExpenseManagerService} from "../../../expense-manager.service";
+import {ExpenseManager} from "../../../expense-manager";
 
 @Component({
   selector: 'app-detail-transaction',

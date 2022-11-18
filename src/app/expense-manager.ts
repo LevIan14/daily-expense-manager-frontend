@@ -12,3 +12,8 @@ export interface Category {
   type: string;
   name: string;
 }
+
+export interface User {
+  username: string;
+  password: string;
+}
