@@ -14,15 +14,19 @@ export class ExpenseManagerService {
   ) { }
 
   getAllTransactionsByYear(year: string): Observable<ExpenseManager[]> {
-    return this.httpClient.get<ExpenseManager[]>(`${environment.urlApi}/transaction/list`);
+    return this.httpClient.get<ExpenseManager[]>(`${environment.urlApi}/transaction/list/${year}`);
   }
 
-  getAllCategories(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(`${environment.urlApi}`);
+  getAllCategories(categoryGroup: string): Observable<Category[]> {
+    return this.httpClient.get<Category[]>(`${environment.urlApi}/category/list/${categoryGroup}`);
   }
 
   getDetailTransaction(id: string): Observable<ExpenseManager> {
     return this.httpClient.get<ExpenseManager>(`${environment.urlApi}`);
+  }
+
+  getDetailCategory(categoryId: number, userId: number): Observable<Category> {
+    return this.httpClient.get<Category>(`${environment.urlApi}/category/detail/${categoryId}/${userId}`);
   }
 
   addTransaction(bodyRequest: ExpenseManager): Observable<ExpenseManager> {
@@ -31,6 +35,14 @@ export class ExpenseManagerService {
 
   addCategory(bodyRequest: Category): Observable<Category> {
     return this.httpClient.post<Category>(`${environment.urlApi}`, bodyRequest);
+  }
+
+  editCategory(bodyRequest): Observable<Category> {
+    return this.httpClient.put<Category>(`${environment.urlApi}/category/update`, bodyRequest);
+  }
+
+  deleteCategory(categoryId: number, userId: number): Observable<void> {
+    return this.httpClient.delete<void>(`${environment.urlApi}/delete/${categoryId}&${userId}`);
   }
 
 

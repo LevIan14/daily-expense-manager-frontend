@@ -1,1 +1,22 @@
-<p>detail-category works!</p>
+<div class="edit-category-container">
+  <h3 class="mb-4">Edit Category</h3>
+  <form (ngSubmit)="submitEditCategory()" [formGroup]="formGroupEditCategory" class="">
+    <div class="mb-2">
+      <label class="form-label">Type</label>
+      <select  class="form-select" formControlName="type" name="type">
+        <option *ngFor="let type of listTransactionType" [value]="type">{{type | titlecase}}</option>
+      </select>
+    </div>
+
+    <div class="mb-2">
+      <label for="name" class="form-label">Title</label>
+      <input class="form-control" id="name" formControlName="name">
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button (click)="cancelEditCategory()" class="btn btn-outline-warn">Cancel</button>
+      <button type="submit" class="btn btn-success">Submit</button>
+    </div>
+
+  </form>
+</div>

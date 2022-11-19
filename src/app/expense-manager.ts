@@ -1,5 +1,5 @@
 export interface ExpenseManager {
-  id?: string;
+  id?: number;
   type: string;
   note: string;
   category: string;
@@ -8,12 +8,13 @@ export interface ExpenseManager {
 }
 
 export interface Category {
-  id?: string;
+  id?: number;
   type: string;
   name: string;
 }
 
 export interface User {
+  id?: number;
   username: string;
   password: string;
 }

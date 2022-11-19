@@ -23,7 +23,7 @@ export class AddTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initCategories();
+    this.getCategoriesByGroupName();
   }
 
   initAttribute() {
@@ -38,9 +38,13 @@ export class AddTransactionComponent implements OnInit {
     this.listTransactionType = ['Income', 'Expense'];
   }
 
-  initCategories() {
-    this.expenseManagerService.getAllCategories().subscribe((result: Category[]) => {
-      this.listCategories = []
+  getCategoriesByGroupName() {
+    this.expenseManagerService.getAllCategories(this.formGroupAddTransaction.get('type').value.toString()).subscribe({
+      next: (result: Category[]) => {
+        this.listCategories = result;
+      }, error: () => {
+
+      }
     });
   }
 

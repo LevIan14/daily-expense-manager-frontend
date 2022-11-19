@@ -26,15 +26,15 @@ export class AddCategoryComponent implements OnInit {
 
   initAttribute() {
     this.formGroupAddCategory = this.formBuilder.group({
-      type: new FormControl('Income'),
+      type: new FormControl('income'),
       name: new FormControl('', [Validators.required])
     });
 
-    this.listTransactionType = ['Income', 'Expense'];
+    this.listTransactionType = ['income', 'expense'];
   }
 
   submitAddCategory() {
-    this.formGroupAddCategory.get('type').setValue(this.formGroupAddCategory.get('type').value.toString().toLowerCase());
+    this.formGroupAddCategory.get('type').setValue(this.formGroupAddCategory.get('type').value.toString().toUpperCase());
     this.expenseManagerService.addCategory(this.formGroupAddCategory.value).subscribe({
       next: () => {
         this.router.navigate(['list-categories/all']);

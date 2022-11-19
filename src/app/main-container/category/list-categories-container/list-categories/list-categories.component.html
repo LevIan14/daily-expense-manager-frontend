@@ -1,12 +1,35 @@
 <div class="list-categories-container">
-  <h3>All Categories</h3>
-
-  <div class="list-group">
-    <a class="list-group-item list-group-item-action card-container">
-      <div>
-        <h5 class="mb-1">Name</h5>
-      </div>
+  <section class="header-container">
+    <h3>All Categories</h3>
+    <a href="/add-category">
+      <button class="btn btn-outline-success">Add Category</button>
     </a>
-  </div>
+  </section>
+
+  <hr />
+
+  <section class="list-categories-sub-container">
+    <section class="list-group">
+      <p>Income</p>
+      <a class="list-group-item list-group-item-action card-container" (click)="goToDetailCategory(income.category_id)" *ngFor="let income of listCategoriesIncome">
+        <div>
+          <h5 class="mb-1">{{income.category_name | titlecase}}</h5>
+        </div>
+      </a>
+    </section>
+
+    <section class="list-group">
+      <p>Expense</p>
+      <a class="list-group-item list-group-item-action card-container" (click)="goToDetailCategory(expense.category_id)" *ngFor="let expense of listCategoriesExpense">
+        <div>
+          <h5 class="mb-1">{{expense.category_name | titlecase}}</h5>
+        </div>
+      </a>
+    </section>
+  </section>
+
+
 </div>
+
+
 
