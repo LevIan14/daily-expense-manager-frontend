@@ -1,16 +1,16 @@
-<div class="add-transaction-container">
-  <h3 class="mb-4">Add Transaction</h3>
+<div class="add-category-container">
+  <h3 class="mb-4">Add Category</h3>
   <form (ngSubmit)="submitAddCategory()" [formGroup]="formGroupAddCategory" class="">
     <div class="mb-2">
       <label class="form-label">Type</label>
-      <select  class="form-select" formControlName="type" name="type">
-        <option *ngFor="let type of listTransactionType" [value]="type">{{type | titlecase}}</option>
+      <select class="form-select" formControlName="type" name="type">
+        <option id="type" *ngFor="let type of listTransactionType" [ngValue]="type">{{type.categoryGroupName | titlecase}}</option>
       </select>
     </div>
 
     <div class="mb-2">
-      <label for="note" class="form-label">Title</label>
-      <input class="form-control" id="note" formControlName="note">
+      <label for="name" class="form-label">Category Name</label>
+      <input class="form-control" id="name" formControlName="name">
     </div>
 
     <div class="d-flex justify-content-end">

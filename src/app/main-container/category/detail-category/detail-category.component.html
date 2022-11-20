@@ -4,19 +4,21 @@
     <div class="mb-2">
       <label class="form-label">Type</label>
       <select  class="form-select" formControlName="type" name="type">
-        <option *ngFor="let type of listTransactionType" [value]="type">{{type | titlecase}}</option>
+        <option *ngFor="let type of listTransactionType" [value]="type">{{type.categoryGroupName | titlecase}}</option>
       </select>
     </div>
 
     <div class="mb-2">
-      <label for="name" class="form-label">Title</label>
+      <label for="name" class="form-label">Category Name</label>
       <input class="form-control" id="name" formControlName="name">
     </div>
 
-    <div class="d-flex justify-content-end">
-      <button (click)="cancelEditCategory()" class="btn btn-outline-warn">Cancel</button>
-      <button type="submit" class="btn btn-success">Submit</button>
+    <div class="btn-container">
+      <button class="btn btn-outline-error" (click)="deleteCategory()">Delete</button>
+      <div class="d-flex justify-self-end">
+        <button (click)="cancelEditCategory()" class="btn btn-outline-warn">Cancel</button>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </div>
     </div>
-
   </form>
 </div>

@@ -14,7 +14,7 @@ export class DetailCategoryComponent implements OnInit {
   userId: number;
   categoryId: number;
   formGroupEditCategory!: FormGroup;
-  listTransactionType: string[];
+  listTransactionType: any[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,34 +31,42 @@ export class DetailCategoryComponent implements OnInit {
 
   initAttribute() {
     this.formGroupEditCategory = this.formBuilder.group({
-      type: new FormControl('income'),
+      type: new FormControl({categoryGroupId: 1, categoryGroupName: 'income'}),
       name: new FormControl('', [Validators.required])
     });
-    this.listTransactionType = ['income', 'expense'];
+    this.listTransactionType = [{categoryGroupId: 1, categoryGroupName: 'income'}, {categoryGroupId: 2, categoryGroupName: 'expense'}];
     this.categoryId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
   }
 
   getDetailCategory() {
-    this.userId = (JSON.parse(sessionStorage.getItem('user')) as User).id;
-    this.expenseManagerService.getDetailCategory(this.categoryId, this.userId).subscribe({
+    this.expenseManagerService.getDetailCategory(this.categoryId).subscribe({
       next: (result) => {
-        console.log(result)
+        this.formGroupEditCategory.get('type').setValue(result.category_group);
+        this.formGroupEditCategory.get('name').setValue(result.category_name);
       }
     });
   }
 
   submitEditCategory() {
     const bodyRequest = {
-      categoryId: this.categoryId,
-      categoryGroup: this.formGroupEditCategory.get('type').value.toString().toUpperCase(),
-      userId: JSON.parse(sessionStorage.getItem('user')).id,
-      categoryName: this.formGroupEditCategory.get('name').value.toString()
-    }
-    this.expenseManagerService.editCategory(bodyRequest).subscribe({
+      categoryGroupId: this.formGroupEditCategory.get('type').value.categoryGroupId,
+      name: this.formGroupEditCategory.get('name').value.toString()
+    };
+    this.expenseManagerService.editCategory(this.categoryId, bodyRequest).subscribe({
       next: () => {
         this.router.navigate(['list-categories/all']);
       }, error: () => {
 
+      }
+    });
+  }
+
+  deleteCategory() {
+    this.expenseManagerService.deleteCategory(this.categoryId).subscribe({
+      next: () => {
+        this.router.navigate(['list-categories/all']);
+      }, error: (error) => {
+        console.log(error);
       }
     });
   }

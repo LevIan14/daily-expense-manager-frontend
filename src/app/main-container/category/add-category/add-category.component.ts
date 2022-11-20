@@ -11,7 +11,7 @@ import {ExpenseManagerService} from "../../../expense-manager.service";
 export class AddCategoryComponent implements OnInit {
 
   formGroupAddCategory!: FormGroup;
-  listTransactionType: string[];
+  listTransactionType: any[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,17 +25,24 @@ export class AddCategoryComponent implements OnInit {
   }
 
   initAttribute() {
+    this.listTransactionType = [{categoryGroupId: 1, categoryGroupName: 'income'}, {categoryGroupId: 2, categoryGroupName: 'expense'}];
+
     this.formGroupAddCategory = this.formBuilder.group({
-      type: new FormControl('income'),
+      type: new FormControl(this.listTransactionType[0]),
       name: new FormControl('', [Validators.required])
     });
+    console.log(this.formGroupAddCategory.value)
 
-    this.listTransactionType = ['income', 'expense'];
   }
 
   submitAddCategory() {
-    this.formGroupAddCategory.get('type').setValue(this.formGroupAddCategory.get('type').value.toString().toUpperCase());
-    this.expenseManagerService.addCategory(this.formGroupAddCategory.value).subscribe({
+    console.log(this.formGroupAddCategory.value)
+    const bodyRequest = {
+      categoryGroupId: this.formGroupAddCategory.get('type').value.categoryGroupId,
+      name: this.formGroupAddCategory.get('name').value.toString()
+    };
+    console.log(bodyRequest)
+    this.expenseManagerService.addCategory(bodyRequest).subscribe({
       next: () => {
         this.router.navigate(['list-categories/all']);
       }, error: () => {

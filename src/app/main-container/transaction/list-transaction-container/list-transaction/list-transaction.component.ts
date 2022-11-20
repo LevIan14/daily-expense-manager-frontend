@@ -27,11 +27,13 @@ export class ListTransactionComponent implements OnInit {
 
   getAllTransactions() {
     this.expenseManagerService.getAllTransactionsByYear(this.year).subscribe({
-      next: () => {
-
+      next: (result) => {
+        console.log(result);
       },
       error: () => {
         console.log('masuk');
+        console.log(dayjs().year())
+        console.log(typeof dayjs().year())
       }
     });
   }

@@ -25,24 +25,24 @@ export class ExpenseManagerService {
     return this.httpClient.get<ExpenseManager>(`${environment.urlApi}`);
   }
 
-  getDetailCategory(categoryId: number, userId: number): Observable<Category> {
-    return this.httpClient.get<Category>(`${environment.urlApi}/category/detail/${categoryId}/${userId}`);
+  getDetailCategory(categoryId: number): Observable<Category> {
+    return this.httpClient.get<Category>(`${environment.urlApi}/category/detail/${categoryId}`);
   }
 
   addTransaction(bodyRequest: ExpenseManager): Observable<ExpenseManager> {
     return this.httpClient.post<ExpenseManager>(`${environment.urlApi}`, bodyRequest);
   }
 
-  addCategory(bodyRequest: Category): Observable<Category> {
-    return this.httpClient.post<Category>(`${environment.urlApi}`, bodyRequest);
+  addCategory(bodyRequest: any): Observable<Category> {
+    return this.httpClient.post<Category>(`${environment.urlApi}/category/add`, bodyRequest);
   }
 
-  editCategory(bodyRequest): Observable<Category> {
-    return this.httpClient.put<Category>(`${environment.urlApi}/category/update`, bodyRequest);
+  editCategory(categoryId: number, bodyRequest): Observable<Category> {
+    return this.httpClient.put<Category>(`${environment.urlApi}/category/update/${categoryId}`, bodyRequest);
   }
 
-  deleteCategory(categoryId: number, userId: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.urlApi}/delete/${categoryId}&${userId}`);
+  deleteCategory(categoryId: number): Observable<boolean> {
+    return this.httpClient.delete<boolean>(`${environment.urlApi}/category/delete/${categoryId}`);
   }
 
 

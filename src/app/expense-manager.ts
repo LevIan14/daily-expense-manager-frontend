@@ -9,8 +9,13 @@ export interface ExpenseManager {
 
 export interface Category {
   id?: number;
-  type: string;
-  name: string;
+  category_group: CategoryGroup;
+  category_name: string;
+}
+
+export interface CategoryGroup {
+  categoryGroupId: number;
+  categoryGroupName: string;
 }
 
 export interface User {
