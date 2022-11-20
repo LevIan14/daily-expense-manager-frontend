@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Category, ExpenseManager} from "./expense-manager";
+import {Category, Transaction} from "./expense-manager";
 import {environment} from "../environments/environment";
 
 @Injectable({
@@ -13,24 +13,36 @@ export class ExpenseManagerService {
     private httpClient: HttpClient
   ) { }
 
-  getAllTransactionsByYear(year: string): Observable<ExpenseManager[]> {
-    return this.httpClient.get<ExpenseManager[]>(`${environment.urlApi}/transaction/list/${year}`);
+  getAllTransactionsByYear(year: string): Observable<Transaction[]> {
+    return this.httpClient.get<Transaction[]>(`${environment.urlApi}/transaction/list/${year}`);
   }
 
-  getAllCategories(categoryGroup: string): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(`${environment.urlApi}/category/list/${categoryGroup}`);
+  getAllCategoriesByCategoryGroupId(categoryGroupId: number): Observable<Category[]> {
+    return this.httpClient.get<Category[]>(`${environment.urlApi}/category/list/${categoryGroupId}`);
   }
 
-  getDetailTransaction(id: string): Observable<ExpenseManager> {
-    return this.httpClient.get<ExpenseManager>(`${environment.urlApi}`);
+  getDetailTransaction(id: number): Observable<Transaction> {
+    return this.httpClient.get<Transaction>(`${environment.urlApi}/transaction/detail/${id}`);
   }
 
   getDetailCategory(categoryId: number): Observable<Category> {
     return this.httpClient.get<Category>(`${environment.urlApi}/category/detail/${categoryId}`);
   }
 
-  addTransaction(bodyRequest: ExpenseManager): Observable<ExpenseManager> {
-    return this.httpClient.post<ExpenseManager>(`${environment.urlApi}`, bodyRequest);
+  getSavedAmount() {
+    return this.httpClient.get<any>(`${environment.urlApi}/saved-amount/total`);
+  }
+
+  addTransaction(bodyRequest: any): Observable<Transaction> {
+    return this.httpClient.post<Transaction>(`${environment.urlApi}/transaction/add`, bodyRequest);
+  }
+
+  editTransaction(idTransaction: number, bodyRequest) {
+    return this.httpClient.put<any>(`${environment.urlApi}/transaction/update/${idTransaction}`, bodyRequest);
+  }
+
+  deleteTransaction(id: number): Observable<any> {
+    return this.httpClient.delete<any>(`${environment.urlApi}/transaction/delete/${id}`);
   }
 
   addCategory(bodyRequest: any): Observable<Category> {

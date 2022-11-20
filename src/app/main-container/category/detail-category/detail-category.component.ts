@@ -30,18 +30,19 @@ export class DetailCategoryComponent implements OnInit {
   }
 
   initAttribute() {
+    this.listTransactionType = [{categoryGroupId: 1, categoryGroupName: 'income'}, {categoryGroupId: 2, categoryGroupName: 'expense'}];
+
     this.formGroupEditCategory = this.formBuilder.group({
-      type: new FormControl({categoryGroupId: 1, categoryGroupName: 'income'}),
+      type: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required])
     });
-    this.listTransactionType = [{categoryGroupId: 1, categoryGroupName: 'income'}, {categoryGroupId: 2, categoryGroupName: 'expense'}];
     this.categoryId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
   }
 
   getDetailCategory() {
     this.expenseManagerService.getDetailCategory(this.categoryId).subscribe({
-      next: (result) => {
-        this.formGroupEditCategory.get('type').setValue(result.category_group);
+      next: (result: any) => {
+        this.formGroupEditCategory.get('type').setValue(result.category_group_id);
         this.formGroupEditCategory.get('name').setValue(result.category_name);
       }
     });
@@ -50,7 +51,7 @@ export class DetailCategoryComponent implements OnInit {
   submitEditCategory() {
     const bodyRequest = {
       categoryGroupId: this.formGroupEditCategory.get('type').value.categoryGroupId,
-      name: this.formGroupEditCategory.get('name').value.toString()
+      name: this.formGroupEditCategory.get('name').value.toString().toUpperCase()
     };
     this.expenseManagerService.editCategory(this.categoryId, bodyRequest).subscribe({
       next: () => {

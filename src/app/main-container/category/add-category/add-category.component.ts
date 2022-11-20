@@ -28,20 +28,16 @@ export class AddCategoryComponent implements OnInit {
     this.listTransactionType = [{categoryGroupId: 1, categoryGroupName: 'income'}, {categoryGroupId: 2, categoryGroupName: 'expense'}];
 
     this.formGroupAddCategory = this.formBuilder.group({
-      type: new FormControl(this.listTransactionType[0]),
+      type: new FormControl(this.listTransactionType[0], [Validators.required]),
       name: new FormControl('', [Validators.required])
     });
-    console.log(this.formGroupAddCategory.value)
-
   }
 
   submitAddCategory() {
-    console.log(this.formGroupAddCategory.value)
     const bodyRequest = {
       categoryGroupId: this.formGroupAddCategory.get('type').value.categoryGroupId,
-      name: this.formGroupAddCategory.get('name').value.toString()
+      name: this.formGroupAddCategory.get('name').value.toString().toUpperCase()
     };
-    console.log(bodyRequest)
     this.expenseManagerService.addCategory(bodyRequest).subscribe({
       next: () => {
         this.router.navigate(['list-categories/all']);

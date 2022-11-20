@@ -1,10 +1,14 @@
 <div class="edit-category-container">
   <h3 class="mb-4">Edit Category</h3>
-  <form (ngSubmit)="submitEditCategory()" [formGroup]="formGroupEditCategory" class="">
+  <form [formGroup]="formGroupEditCategory">
     <div class="mb-2">
       <label class="form-label">Type</label>
       <select  class="form-select" formControlName="type" name="type">
-        <option *ngFor="let type of listTransactionType" [value]="type">{{type.categoryGroupName | titlecase}}</option>
+        <option *ngFor="let type of listTransactionType"
+                [selected]="type.categoryGroupId === formGroupEditCategory.get('type').value"
+                [ngValue]="type">
+          {{type.categoryGroupName | titlecase}}
+        </option>
       </select>
     </div>
 
@@ -17,7 +21,7 @@
       <button class="btn btn-outline-error" (click)="deleteCategory()">Delete</button>
       <div class="d-flex justify-self-end">
         <button (click)="cancelEditCategory()" class="btn btn-outline-warn">Cancel</button>
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button [disabled]="formGroupEditCategory.invalid" (click)="submitEditCategory()" type="submit" class="btn btn-success">Submit</button>
       </div>
     </div>
   </form>

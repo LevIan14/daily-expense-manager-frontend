@@ -1,13 +1,17 @@
 <div class="list-transaction-container">
-  <h3>All Transactions</h3>
+  <div>
+    <h3>All Transactions</h3>
+    <p>Wallet: {{savedAmount}}</p>
+    <input class="form-control mb-4" [value]="year" (keydown.enter)="fetchTransactions($event)">
+  </div>
 
   <div class="list-group">
-    <a class="list-group-item list-group-item-action card-container">
+    <a class="list-group-item list-group-item-action card-container" (click)="goToDetailTransaction(transaction.transaction_id)" *ngFor="let transaction of listTransaction">
       <div>
-        <h5 class="mb-1">Notes</h5>
-        <p class="mb-0">Dates</p>
+        <h5 class="mb-1">{{transaction.note}}</h5>
+        <p class="mb-0">{{transaction.date | date}}</p>
       </div>
-      <span>Amount</span>
+      <span [ngClass]="transaction.category_group === 'INCOME' ? 'color-income' : 'color-expense'">{{transaction.amount}}</span>
     </a>
   </div>
 </div>

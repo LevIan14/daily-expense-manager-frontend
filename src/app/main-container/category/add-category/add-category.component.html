@@ -1,6 +1,6 @@
 <div class="add-category-container">
   <h3 class="mb-4">Add Category</h3>
-  <form (ngSubmit)="submitAddCategory()" [formGroup]="formGroupAddCategory" class="">
+  <form [formGroup]="formGroupAddCategory">
     <div class="mb-2">
       <label class="form-label">Type</label>
       <select class="form-select" formControlName="type" name="type">
@@ -15,7 +15,7 @@
 
     <div class="d-flex justify-content-end">
       <button (click)="cancelAddCategory()" class="btn btn-outline-warn">Cancel</button>
-      <button type="submit" class="btn btn-success">Submit</button>
+      <button [disabled]="formGroupAddCategory.invalid" (click)="submitAddCategory()" type="submit" class="btn btn-success">Submit</button>
     </div>
 
   </form>

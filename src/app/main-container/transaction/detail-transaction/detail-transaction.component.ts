@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ExpenseManagerService} from "../../../expense-manager.service";
-import {ExpenseManager} from "../../../expense-manager";
+import {Category} from "../../../expense-manager";
+import * as dayjs from "dayjs";
 
 @Component({
   selector: 'app-detail-transaction',
@@ -11,9 +12,9 @@ import {ExpenseManager} from "../../../expense-manager";
 })
 export class DetailTransactionComponent implements OnInit {
 
-  idTransaction: string;
+  idTransaction: number;
   formGroupDetailTransaction!: FormGroup;
-  listTransactionType: string[];
+  listTransactionType: any[];
   listCategories: any[];
 
   constructor(
@@ -23,7 +24,7 @@ export class DetailTransactionComponent implements OnInit {
     private expenseManagerService: ExpenseManagerService
   ) {
     this.initAttribute();
-    this.idTransaction = this.activatedRoute.snapshot.queryParamMap.get('id');
+    this.idTransaction = Number(this.activatedRoute.snapshot.paramMap.get('id'));
   }
 
   ngOnInit(): void {
@@ -31,23 +32,29 @@ export class DetailTransactionComponent implements OnInit {
   }
 
   initAttribute() {
+    this.listTransactionType = [{categoryGroupId: 1, categoryGroupName: 'income'}, {categoryGroupId: 2, categoryGroupName: 'expense'}];
+
     this.formGroupDetailTransaction = this.formBuilder.group({
-      type: new FormControl(''),
-      note: new FormControl(''),
-      category: new FormControl(''),
-      amount: new FormControl(''),
-      date: new FormControl('')
+      type: new FormControl('', [Validators.required]),
+      note: new FormControl('', [Validators.required]),
+      category: new FormControl('', [Validators.required]),
+      amount: new FormControl('', [Validators.required]),
+      date: new FormControl('', [Validators.required])
+    });
+
+    this.formGroupDetailTransaction.get('type').valueChanges.subscribe((type) => {
+      this.getCategoriesByCategoryGroupId(type.categoryGroupId);
     });
   }
 
   getDetailTransaction() {
     this.expenseManagerService.getDetailTransaction(this.idTransaction).subscribe({
-      next: (transaction: ExpenseManager) => {
-        this.formGroupDetailTransaction.get('type').setValue(transaction.type);
+      next: (transaction: any) => {
+        this.formGroupDetailTransaction.get('type').setValue({categoryGroupId: transaction.category_group_id, categoryGroupName: transaction.category_group_name});
         this.formGroupDetailTransaction.get('note').setValue(transaction.note);
-        this.formGroupDetailTransaction.get('category').setValue(transaction.category);
+        this.formGroupDetailTransaction.get('category').setValue({category_id: transaction.category_id, category_name: transaction.category});
         this.formGroupDetailTransaction.get('amount').setValue(transaction.amount);
-        this.formGroupDetailTransaction.get('date').setValue(transaction.date);
+        this.formGroupDetailTransaction.get('date').setValue(dayjs(transaction.date).format('YYYY-MM-DD'));
       },
       error: () => {
 
@@ -55,14 +62,41 @@ export class DetailTransactionComponent implements OnInit {
     });
   }
 
+  compareCategory(o1: any, o2: any) {
+    return o1.category_id === o2.category_id;
+  }
+
+  getCategoriesByCategoryGroupId(categoryGroupId) {
+    this.expenseManagerService.getAllCategoriesByCategoryGroupId(categoryGroupId).subscribe({
+      next: (result: Category[]) => {
+        this.listCategories = result;
+      }, error: () => {
+
+      }
+    });
+  }
+
   submitEditTransaction() {
-    this.formGroupDetailTransaction.get('type').setValue(this.formGroupDetailTransaction.get('type').value.toString().toLowerCase());
-    this.expenseManagerService.addTransaction(this.formGroupDetailTransaction.value).subscribe({
+    const bodyRequest = {
+      note: this.formGroupDetailTransaction.get('note').value.toString(),
+      categoryId: Number(this.formGroupDetailTransaction.get('category').value.category_id),
+      amount: this.formGroupDetailTransaction.get('amount').value,
+      date: this.formGroupDetailTransaction.get('date').value.toString(),
+    }
+
+    this.expenseManagerService.editTransaction(this.idTransaction, bodyRequest).subscribe({
       next: () => {
         this.router.navigate(['list-transaction/all']);
       },
       error: () => {
+      }
+    });
+  }
 
+  deleteTransaction() {
+    this.expenseManagerService.deleteTransaction(this.idTransaction).subscribe({
+      next: () => {
+        this.router.navigate(['list-transaction/all']);
       }
     });
   }

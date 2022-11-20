@@ -1,5 +1,5 @@
-export interface ExpenseManager {
-  id?: number;
+export interface Transaction {
+  transactionId?: number;
   type: string;
   note: string;
   category: string;

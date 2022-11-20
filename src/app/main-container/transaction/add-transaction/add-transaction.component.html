@@ -1,10 +1,10 @@
 <div class="add-transaction-container">
   <h3 class="mb-4">Add Transaction</h3>
-  <form (ngSubmit)="submitAddTransaction()" [formGroup]="formGroupAddTransaction" class="">
+  <form [formGroup]="formGroupAddTransaction">
     <div class="mb-2">
       <label class="form-label">Type</label>
       <select  class="form-select" formControlName="type" name="type">
-        <option *ngFor="let type of listTransactionType" [value]="type">{{type}}</option>
+        <option *ngFor="let type of listTransactionType" [ngValue]="type">{{type.categoryGroupName | titlecase}}</option>
       </select>
     </div>
 
@@ -16,8 +16,8 @@
     <div class="mb-2">
       <label class="form-label">Category</label>
       <select class="form-select" formControlName="category">
-        <option *ngFor="let type of listCategories" [value]="type.id">
-          {{type.name}}
+        <option *ngFor="let type of listCategories" [value]="type.category_id">
+          {{type.category_name | titlecase}}
         </option>
       </select>
     </div>
@@ -34,7 +34,7 @@
 
     <div class="d-flex justify-content-end">
       <button (click)="cancelTransaction()" class="btn btn-outline-warn">Cancel</button>
-      <button type="submit" class="btn btn-success">Submit</button>
+      <button [disabled]="formGroupAddTransaction.invalid" type="submit" (click)="submitAddTransaction()" class="btn btn-success">Submit</button>
     </div>
 
   </form>

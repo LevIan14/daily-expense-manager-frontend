@@ -1,10 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {
   ListTransactionComponent
 } from "./transaction/list-transaction-container/list-transaction/list-transaction.component";
-import {ListIncomesComponent} from "./transaction/list-transaction-container/list-incomes/list-incomes.component";
-import {ListExpensesComponent} from "./transaction/list-transaction-container/list-expenses/list-expenses.component";
 import {AddTransactionComponent} from "./transaction/add-transaction/add-transaction.component";
 import {DetailTransactionComponent} from "./transaction/detail-transaction/detail-transaction.component";
 import {ListCategoriesComponent} from "./category/list-categories-container/list-categories/list-categories.component";
@@ -30,14 +28,6 @@ const routes: Routes = [
         path: 'all',
         component: ListTransactionComponent
       },
-      {
-        path: 'income',
-        component: ListIncomesComponent
-      },
-      {
-        path: 'expense',
-        component: ListExpensesComponent
-      },
     ]
   },
   {
@@ -59,15 +49,7 @@ const routes: Routes = [
       {
         path: 'all',
         component: ListCategoriesComponent
-      },
-      {
-        path: 'income',
-        component: ListCategoriesIncomeComponent
-      },
-      {
-        path: 'expense',
-        component: ListCategoriesExpenseComponent
-      },
+      }
     ]
   },
   {

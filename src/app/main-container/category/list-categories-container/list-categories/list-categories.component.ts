@@ -22,7 +22,7 @@ export class ListCategoriesComponent implements OnInit {
   }
 
   getListCategoriesIncome() {
-    this.expenseManagerService.getAllCategories('income').subscribe({
+    this.expenseManagerService.getAllCategoriesByCategoryGroupId(1).subscribe({
       next: (result) => {
         this.listCategoriesIncome = result;
         console.log(result)
@@ -31,7 +31,7 @@ export class ListCategoriesComponent implements OnInit {
   }
 
   getListCategoriesExpense() {
-    this.expenseManagerService.getAllCategories('expense').subscribe({
+    this.expenseManagerService.getAllCategoriesByCategoryGroupId(2).subscribe({
       next: (result) => {
         this.listCategoriesExpense = result;
       }

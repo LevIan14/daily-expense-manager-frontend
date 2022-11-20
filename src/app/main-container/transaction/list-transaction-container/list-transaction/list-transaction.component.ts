@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ExpenseManagerService} from "../../../../expense-manager.service";
 import * as dayjs from "dayjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-list-transaction',
@@ -10,31 +11,50 @@ import * as dayjs from "dayjs";
 export class ListTransactionComponent implements OnInit {
 
   year: string;
+  listTransaction: any[];
+  savedAmount: number;
 
   constructor(
-    private expenseManagerService: ExpenseManagerService
+    private expenseManagerService: ExpenseManagerService,
+    private router: Router
   ) {
     this.initAttribute();
   }
 
   ngOnInit(): void {
-    this.getAllTransactions();
+    this.getSavedAmount();
+    this.getAllTransactions(this.year);
   }
 
   initAttribute() {
     this.year = dayjs().year().toString();
+    this.savedAmount = 0;
   }
 
-  getAllTransactions() {
-    this.expenseManagerService.getAllTransactionsByYear(this.year).subscribe({
+  getSavedAmount() {
+    this.expenseManagerService.getSavedAmount().subscribe({
       next: (result) => {
-        console.log(result);
-      },
-      error: () => {
-        console.log('masuk');
-        console.log(dayjs().year())
-        console.log(typeof dayjs().year())
+        this.savedAmount = result;
       }
     });
+  }
+
+  getAllTransactions(year: string) {
+    this.expenseManagerService.getAllTransactionsByYear(year).subscribe({
+      next: (result) => {
+        this.listTransaction = result;
+      },
+      error: () => {
+      }
+    });
+  }
+
+  fetchTransactions(event) {
+    this.year = event.target.value;
+    this.getAllTransactions(this.year);
+  }
+
+  goToDetailTransaction(transactionId: number) {
+    this.router.navigate(['detail-transaction', transactionId]);
   }
 }
